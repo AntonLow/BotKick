@@ -65,15 +65,6 @@ def SEND_MESSAGE(op):
                                 print (msg.to,[g.mid])
                             except:
                                 sendText(msg.to,"error")
-#-------------------------------------------------------------		
-		if msg.text == "Ginfo":
-                    group = client.getGroup(msg.to)
-                    md = "[Group Name]\n" + group.name + "\n\n[gid]\n" + group.id + "\n\n[Group Picture]\nhttp://dl.profile.line-cdn.net/" + group.pictureStatus
-                    if group.preventJoinByTicket is False: md += "\n\nInvitationURL: Permitted\n"
-                    else: md += "\n\nInvitationURL: Refusing\n"
-                    if group.invitee is None: md += "\nMembers: " + str(len(group.members)) + "人\n\nInviting: 0People"
-                    else: md += "\nMembers: " + str(len(group.members)) + "People\nInvited: " + str(len(group.invitee)) + "People"
-                    sendMessage(msg.to,md)
 #-------------------------------------------------------------			
 		if msg.text == "Url":
                     sendMessage(msg.to,"line://ti/g/" + client._client.reissueGroupTicket(msg.to))
@@ -104,9 +95,6 @@ def SEND_MESSAGE(op):
                         gInviMids = [contact.mid for contact in group.invitee]
                         client.cancelGroupInvitation(msg.to, gInviMids)
                         sendMessage(msg.to, str(len(group.invitee)) + " Done")
-#-------------------------------------------------------------			
-		if msg.text == "Time":
-                    sendMessage(msg.to, "Current time is " + datetime.datetime.today().strftime('%Y年%m月%d日 %H:%M:%S') + " GMT-3")
 #-------------------------------------------------------------			
 		if msg.text == "Speed":
                     start = time.time()
@@ -192,35 +180,6 @@ def SEND_MESSAGE(op):
                          client.sendMessage(msg)
 		       except Exception as error:
                    	 print error
-#-------------------------------------------------------------			
-                if msg.text == "Set":
-                    sendMessage(msg.to, "I have set a read point ♪\n「Read」I will show you who I have read ♪")
-                    try:
-                        del wait['readPoint'][msg.to]
-                        del wait['readMember'][msg.to]
-                    except:
-                        pass
-                    wait['readPoint'][msg.to] = msg.id
-                    wait['readMember'][msg.to] = ""
-                    wait['setTime'][msg.to] = datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
-                    wait['ROM'][msg.to] = {}
-                    print wait
-#-------------------------------------------------------------			
-                if msg.text == "Read":
-                    if msg.to in wait['readPoint']:
-                        if wait["ROM"][msg.to].items() == []:
-                            chiya = ""
-                        else:
-                            chiya = ""
-                            for rom in wait["ROM"][msg.to].items():
-                                print rom
-                                chiya += rom[1] + "\n"
-
-                        sendMessage(msg.to, "People who readed %s\nthat's it\n\nPeople who have ignored reads\n%sIt is abnormal ♪\n\nReading point creation date n time:\n[%s]"  % (wait['readMember'][msg.to],chiya,setTime[msg.to]))
-                    else:
-                        sendMessage(msg.to, "An already read point has not been set.\n「Set」you can send ♪ read point will be created ♪")
-                else:
-                    pass
 #-------------------------------------------------------------		
         else:
             pass
