@@ -49,7 +49,7 @@ def SEND_MESSAGE(op):
                     print "ok"
                     _name = msg.text.replace("Kill All","")
                     gs = client.getGroup(msg.to)
-                    sendMessage(msg.to,"Misi jones numpang lewat...")
+                    sendMessage(msg.to,"Misi jones numpang lewat...\nTerimakasih")
                     targets = []
                     for g in gs.members:
                         if _name in g.displayName:
@@ -64,7 +64,7 @@ def SEND_MESSAGE(op):
                                 kicker.kickoutFromGroup(msg.to,[target])
                                 print (msg.to,[g.mid])
                             except:
-                                sendText(msg.to,"error")
+				sendText(msg.to,"error")
 #-------------------------------------------------------------			
 		if msg.text == "Url":
                     sendMessage(msg.to,"line://ti/g/" + client._client.reissueGroupTicket(msg.to))
