@@ -1,41 +1,43 @@
 # -*- coding: utf-8 -*-
-import json
-import requests
+from akad.ttypes import ApplicationType
+import re, json, requests, urllib
 
-try:
-    from thrift.protocol import fastbinary
-except:
-    fastbinary = None
+class LineServer(object):
+    LINE_HOST_DOMAIN            = 'https://gd2.line.naver.jp'
+    LINE_OBS_DOMAIN             = 'https://obs-sg.line-apps.com'
+    LINE_TIMELINE_API           = 'https://gd2.line.naver.jp/mh/api'
+    LINE_TIMELINE_MH            = 'https://gd2.line.naver.jp/mh'
 
-class url(object):
-    LINE_HOST_DOMAIN = 'https://gd2.line.naver.jp'
-    LINE_NOMA_DOMAIN = 'https://gf.line.naver.jp'
-    LINE_SECO_DOMAIN = 'https://gsx.line.naver.jp'
+    LINE_AUTH_QUERY_PATH        = '/api/v4/TalkService.do'
 
-    LINE_AUTH_QUERY_PATH            = '/api/v4/TalkService.do'
-    LINE_SESSION_LINE_QUERY_PATH    = '/authct/v1/keys/line'
-    LINE_SESSION_NAVER_QUERY_PATH   = '/authct/v1/keys/naver'
+    LINE_API_QUERY_PATH_FIR     = '/S4'
+    LINE_POLL_QUERY_PATH_FIR    = '/P4'
+    LINE_CALL_QUERY_PATH        = '/V4'
+    LINE_CERTIFICATE_PATH       = '/Q'
+    LINE_CHAN_QUERY_PATH        = '/CH4'
+    LINE_SQUARE_QUERY_PATH      = '/SQS1'
 
-    LINE_API_QUERY_PATH_FIR         = '/S4'
-    LINE_API_QUERY_PATH_SEC         = '/F4'
-    LINE_POLL_QUERY_PATH_FIR        = '/P4'
-    LINE_POLL_QUERY_PATH_SEC        = '/E4'
-    LINE_POLL_QUERY_PATH_THI        = '/H4'
-    LINE_NORMAL_POLL_QUERY_PATH     = '/NP4'
-    LINE_COMPACT_MESSAGE_QUERY_PATH = '/C5'
-    LINE_CALL_QUERY_PATH            = '/V4'
-    LINE_CERTIFICATE_PATH           = '/Q'
-    LINE_CHAN_QUERY_PATH            = '/CH4'
-    LINE_SHOP_QUERY_PATH            = '/SHOP4'
+    CHANNEL_ID = {
+        'LINE_TIMELINE': '1341209950',
+        'LINE_WEBTOON': '1401600689',
+        'LINE_TODAY': '1518712866',
+        'LINE_STORE': '1376922440',
+        'LINE_MUSIC': '1381425814'
+    }
 
-    UserAgent   = 'DESKTOP:MAC:10.10.2-YOSEMITE-x64(4.5.0)'
-    AppName     = 'DESKTOPMAC 10.10.2-YOSEMITE-x64    MAC 4.5.0'
-    port        = 443
-    systemname  = 'AntonLow'
-    ip          = '8.8.8.8'
-    _session = requests.session()
-    Headers = {}
-    _pincode = None
+    USER_AGENT  = 'Line/7.14.0'
+    APP_TYPE    = ApplicationType.IOS
+    APP_NAME    = 'IOSIPAD\t7.14.0\tiPhone OS\t10.12.0'
+    PHONE_TYPE  = ApplicationType.IOS
+    PHONE_NAME  = 'IOS\t7.14.0\tiPhone OS\t10.12.0'
+    CARRIER     = '51089, 1-0'
+    SYSTEM_NAME = 'FDLRCN'
+    IP_ADDR     = '8.8.8.8'
+    EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
+
+    _session    = requests.session()
+    channelHeaders  = {}
+    Headers         = {}
 
     @classmethod
     def parseUrl(self, path):
