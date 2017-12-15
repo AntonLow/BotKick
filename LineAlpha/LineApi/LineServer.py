@@ -5,8 +5,8 @@ import re, json, requests, urllib
 class LineServer(object):
     LINE_HOST_DOMAIN            = 'http://gfpv.line.naver.jp'
     LINE_OBS_DOMAIN             = 'https://obs-sg.line-apps.com'
-    LINE_TIMELINE_API           = 'https://gfpv.line.naver.jp/mh/api'
-    LINE_TIMELINE_MH            = 'https://gfpv.line.naver.jp/mh'
+    LINE_TIMELINE_API           = 'http://gfpv.line.naver.jp/mh/api'
+    LINE_TIMELINE_MH            = 'http://gfpv.line.naver.jp/mh'
 
     LINE_AUTH_QUERY_PATH        = '/api/v4/TalkService.do'
 
